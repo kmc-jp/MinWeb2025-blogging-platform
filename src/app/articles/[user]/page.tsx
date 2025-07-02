@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 async function getArticles(user: string): Promise<any> {
     const url = `https://minweb2025-blogging-platform-backend-975320007014.asia-northeast2.run.app/api/articles/${user}`
     const res = await fetch(url, {
@@ -42,7 +44,9 @@ export default async function Home({ params }: { params: { user: string } }) {
                 <div key={safeStringify(article._id) || `article-${index}`}
                     className="border-b border-gray-200 p-10">
                     <div className="text-sm font-bold text-gray-500">{safeStringify(article._id)}</div>
-                    <div className="text-xl font-bold">{safeStringify(article.title)}</div>
+                    <Link href={`/articles/${user}/${safeStringify(article._id)}`}>
+                        <div className="text-xl font-bold cursor-pointer hover:underline">{safeStringify(article.title)}</div>
+                    </Link>
                     <div className="text-lg font-bold">{safeStringify(article.author)}</div>
                     <div className="text-base font-bold">{safeStringify(article.created_at)}</div>
                     <div className="border border-gray-200 p-5 m-2">
