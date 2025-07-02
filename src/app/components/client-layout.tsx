@@ -16,7 +16,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         <>
             <Header onMenuClick={toggleSidebar} />
             <Sidebar isOpen={isOpen} onClose={closeSidebar} />
-            <main className="min-h-screen">
+            <main className="min-h-screen mb-40">
                 {children}
             </main>
             <Footer />

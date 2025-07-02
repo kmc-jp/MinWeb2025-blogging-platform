@@ -1,11 +1,5 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import ArticlesPage from "./articles/page";
 
 export default function Home() {
-  const router = useRouter();
-  return (
-    <>
-    </>
-  );
+  return <ArticlesPage />;
 }

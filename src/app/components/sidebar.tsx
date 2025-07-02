@@ -37,7 +37,7 @@ export default function Sidebar({ isOpen, onClose, className = "" }: SidebarProp
 
     const menuItems = [
         { href: "/", label: "ホーム", icon: "🏠" },
-        { href: "/blog", label: "ブログ", icon: "📝" },
+        { href: "/search", label: "検索", icon: "🔍" },
         { href: "/category", label: "カテゴリー", icon: "📂" },
         { href: "/tags", label: "タグ", icon: "🏷️" },
         { href: "/about", label: "About", icon: "ℹ️" },
