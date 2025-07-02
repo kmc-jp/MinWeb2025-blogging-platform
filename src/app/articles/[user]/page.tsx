@@ -26,7 +26,7 @@ function safeStringify(value: any): string {
     return String(value);
 }
 
-export default async function Home({ params }: { params: { user: string } }) {
+export default async function Home({ params }: { params: Promise<{ user: string }> }) {
     const { user } = await params
     const articles = await getArticles(user);
 
