@@ -39,10 +39,10 @@ export default function Header({ onMenuClick }: HeaderProps) {
                     {/* デスクトップナビゲーション */}
                     <div className="hidden lg:flex items-center space-x-6">
                         <Link
-                            href="/blog"
+                            href="/search"
                             className="text-gray-600 hover:text-gray-900 transition-colors duration-200 font-medium"
                         >
-                            ブログ
+                            検索
                         </Link>
                         <Link
                             href="/category"
