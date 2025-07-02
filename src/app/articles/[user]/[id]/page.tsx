@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 async function getArticle(user: string, id: string): Promise<any> {
     const url = `https://minweb2025-blogging-platform-backend-975320007014.asia-northeast2.run.app/api/articles/${user}/${id}`
     const res = await fetch(url, {
@@ -39,7 +41,7 @@ export default async function ArticlePage(
                 <div className="mb-8">
                     <h1 className="text-4xl font-extrabold text-black dark:text-white mb-2">{safeStringify(article.title)}</h1>
                     <div className="flex items-center text-gray-500 dark:text-gray-400">
-                        <p className="mr-4">By {safeStringify(article.author)}</p>
+                        <p className="mr-4">By <Link href={`/articles/${user}`} className="hover:underline">{safeStringify(article.author)}</Link></p>
                         <p>{new Date(safeStringify(article.created_at)).toLocaleDateString('ja-JP')}</p>
                     </div>
                 </div>

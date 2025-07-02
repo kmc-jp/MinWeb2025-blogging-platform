@@ -46,7 +46,11 @@ export default async function Home() {
                     <Link href={`/articles/${safeStringify(article.author.inner)}/${safeStringify(article._id)}`}>
                         <div className="text-xl font-bold cursor-pointer hover:underline">{safeStringify(article.title)}</div>
                     </Link>
-                    <div className="text-lg font-bold">{safeStringify(article.author)}</div>
+                    <div className="text-lg font-bold">
+                        <Link href={`/articles/${safeStringify(article.author.inner)}`} className="hover:underline">
+                            {safeStringify(article.author)}
+                        </Link>
+                    </div>
                     <div className="text-base font-bold">{safeStringify(article.created_at)}</div>
                     <div className="border border-gray-200 p-5 m-2">
                         <div className="text-sm">{safeStringify(article.content)}</div>
