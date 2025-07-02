@@ -7,13 +7,13 @@ interface HeaderProps {
 export default function Header({ onMenuClick }: HeaderProps) {
     return (
         <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mx-7">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex items-center space-x-4">
                         {/* ハンバーガーメニューボタン */}
                         <button
                             onClick={onMenuClick}
-                            className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+                            className="rounded-lg hover:bg-gray-100 transition-colors duration-200"
                             aria-label="メニューを開く"
                         >
                             <svg
@@ -32,7 +32,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                         </button>
 
                         <Link href="/" className="flex items-center space-x-2">
-                            <span className="font-bold text-xl text-gray-900">みんウェブ Blog Platform</span>
+                            <span className="font-bold text-sm sm:text-base md:text-lg lg:text-xl text-gray-900 whitespace-nowrap">みんウェブ Blog Platform</span>
                         </Link>
                     </div>
 
@@ -61,13 +61,13 @@ export default function Header({ onMenuClick }: HeaderProps) {
                     <div className="flex items-center space-x-4">
                         <Link
                             href="/login"
-                            className="text-gray-600 hover:text-gray-900 transition-colors duration-200 font-medium"
+                            className="text-sm sm:text-base text-gray-600 hover:text-gray-900 transition-colors duration-200 font-medium"
                         >
                             ログイン
                         </Link>
                         <Link
                             href="/signup"
-                            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all duration-200 font-medium"
+                            className="text-sm sm:text-base bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all duration-200 font-medium"
                         >
                             新規登録
                         </Link>

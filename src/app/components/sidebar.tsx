@@ -22,7 +22,6 @@ export default function Sidebar({ isOpen, onClose, className = "" }: SidebarProp
         return () => document.removeEventListener("keydown", handleEscape);
     }, [isOpen, onClose]);
 
-    // 体のスクロールを制御
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = "hidden";
