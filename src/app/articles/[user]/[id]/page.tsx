@@ -1,29 +1,6 @@
 import Link from 'next/link';
-
-async function getArticle(user: string, id: string): Promise<any> {
-    const url = `https://minweb2025-blogging-platform-backend-975320007014.asia-northeast2.run.app/api/articles/${user}/${id}`
-    const res = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    })
-    return res.json();
-}
-
-function safeStringify(value: any): string {
-    if (value === null || value === undefined) {
-        return '';
-    }
-    if (typeof value === 'string') {
-        return value;
-    }
-    if (typeof value === 'object') {
-        const res = value.inner ? value.inner : value.$oid
-        return res;
-    }
-    return String(value)
-}
+import { getArticle } from '@/lib/api';
+import { safeStringify } from '@/lib/utils';
 
 export default async function ArticlePage(
   context: { params: Promise<{ user: string; id: string }> }

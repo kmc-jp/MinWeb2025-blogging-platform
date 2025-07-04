@@ -1,34 +1,10 @@
 import Link from 'next/link';
-
-async function getArticles(user: string): Promise<any> {
-    const url = `https://minweb2025-blogging-platform-backend-975320007014.asia-northeast2.run.app/api/articles/${user}`
-    const res = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    })
-
-    return res.json();
-}
-
-function safeStringify(value: any): string {
-    if (value === null || value === undefined) {
-        return '';
-    }
-    if (typeof value === 'string') {
-        return value;
-    }
-    if (typeof value === 'object') {
-        const res = value.inner ? value.inner : value.$oid
-        return res;
-    }
-    return String(value);
-}
+import { getArticlesByUser } from '@/lib/api';
+import { safeStringify } from '@/lib/utils';
 
 export default async function Home({ params }: { params: Promise<{ user: string }> }) {
     const { user } = await params
-    const articles = await getArticles(user);
+    const articles = await getArticlesByUser(user);
 
     if (!Array.isArray(articles)) {
         return <div>記事が見つかりませんでした。</div>;
