@@ -27,6 +27,6 @@ export async function getArticlesByUser(user: string): Promise<any> {
     return fetchAPI(url);
 }
 
-export async function getArticle(user: string, id: string): Promise<any> {
+export async function getArticle(id: string): Promise<any> {
     return fetchAPI(`/articles/${id}`);
 }
