@@ -4,6 +4,7 @@ const REVALIDATE_TAGS = ['articles'];
 
 async function fetchAPI(path: string) {
     const url = `${API_BASE_URL}${path}`;
+    console.log(url)
     const res = await fetch(url, {
         method: 'GET',
         headers: {
@@ -21,7 +22,8 @@ export async function getArticles(): Promise<any> {
 }
 
 export async function getArticlesByUser(user: string): Promise<any> {
-    return fetchAPI(`/search?author=${user}`);
+    const url = '/articles/search?' + new URLSearchParams({ author: user })
+    return fetchAPI(url);
 }
 
 export async function getArticle(user: string, id: string): Promise<any> {
