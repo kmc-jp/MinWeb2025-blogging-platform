@@ -1,6 +1,5 @@
 const API_BASE_URL = 'https://minweb2025-blogging-platform-backend-975320007014.asia-northeast2.run.app/api';
 
-const REVALIDATE_SPAN = 60;
 const REVALIDATE_TAGS = ['articles'];
 
 async function fetchAPI(path: string) {
@@ -11,7 +10,6 @@ async function fetchAPI(path: string) {
             'Content-Type': 'application/json'
         },
         next: {
-            revalidate: REVALIDATE_SPAN,
             tags: REVALIDATE_TAGS
         }
     });
@@ -23,9 +21,9 @@ export async function getArticles(): Promise<any> {
 }
 
 export async function getArticlesByUser(user: string): Promise<any> {
-    return fetchAPI(`/articles/${user}`);
+    return fetchAPI(`/search?author=${user}`);
 }
 
 export async function getArticle(user: string, id: string): Promise<any> {
-    return fetchAPI(`/articles/${user}/${id}`);
+    return fetchAPI(`/articles/${id}`);
 }
