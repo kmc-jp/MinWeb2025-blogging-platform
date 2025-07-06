@@ -1,9 +1,18 @@
+'use client'
+
 import Link from 'next/link';
 import { getArticles } from '@/lib/api';
 import { safeStringify } from '@/lib/utils';
+import { useState, useEffect } from 'react';
 
-export default async function Home() {
-    const articles = await getArticles();
+export default function Home() {
+    const [articles, setArticles] = useState<any[]>([]);
+
+    useEffect(() => {
+        getArticles().then((articles) => {
+            setArticles(articles);
+        });
+    }, [])
 
     if (!Array.isArray(articles)) {
         return <div>記事が見つかりませんでした。</div>;

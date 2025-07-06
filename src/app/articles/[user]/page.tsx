@@ -1,10 +1,16 @@
 import Link from 'next/link';
 import { getArticlesByUser } from '@/lib/api';
 import { safeStringify } from '@/lib/utils';
+import { useState, useEffect } from 'react';
 
 export default async function Home({ params }: { params: Promise<{ user: string }> }) {
+    const [articles, setArticles] = useState<any[]>([]);
     const { user } = await params
-    const articles = await getArticlesByUser(user);
+    useEffect(() => {
+        getArticlesByUser(user).then((articles) => {
+            setArticles(articles);
+        });
+    }, [])
 
     if (!Array.isArray(articles)) {
         return <div>記事が見つかりませんでした。</div>;
