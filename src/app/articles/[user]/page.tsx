@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link';
 import { getArticlesByUser } from '@/lib/api';
 import { safeStringify } from '@/lib/utils';

@@ -1,12 +1,22 @@
+'use client'
+
 import Link from 'next/link';
 import { getArticle } from '@/lib/api';
 import { safeStringify } from '@/lib/utils';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation'
 
-export default async function ArticlePage(
-  context: { params: Promise<{ user: string; id: string }> }
-) {
-    const { user, id } = await context.params;
-    const article = await getArticle(user, id);
+export default function ArticlePage() {
+    const [article, setArticle] = useState<any>(null);
+    const searchParams = useSearchParams();
+    const user = searchParams.get('user');
+    const id = searchParams.get('id');
+
+    useEffect(() => {
+        getArticle(user || '', id || '').then((article) => {
+            setArticle(article);
+        });
+    }, []);
 
     if (!article) {
         return <div>記事が見つかりませんでした。</div>;
