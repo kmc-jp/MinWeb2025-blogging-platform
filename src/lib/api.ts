@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://minweb2025-blogging-platform-backend-975320007014.asia-northeast2.run.app/api';
+const API_BASE_URL = '/api';
 
 const REVALIDATE_TAGS = ['articles'];
 
@@ -8,11 +8,13 @@ async function fetchAPI(path: string) {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
-        },
-        next: {
-            tags: REVALIDATE_TAGS
         }
     });
+
+    if (!res.ok) {
+        throw new Error(`API request failed: ${res.status} ${res.statusText}`);
+    }
+
     return res.json();
 }
 
@@ -25,6 +27,6 @@ export async function getArticlesByUser(user: string): Promise<any> {
     return fetchAPI(url);
 }
 
-export async function getArticle(user: string, id: string): Promise<any> {
+export async function getArticle(id: string): Promise<any> {
     return fetchAPI(`/articles/${id}`);
 }
