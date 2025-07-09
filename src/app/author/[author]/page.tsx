@@ -1,9 +1,9 @@
 'use client'
 
-import Link from 'next/link';
 import { getArticlesByUser } from '@/lib/api';
-import { safeStringify } from '@/lib/utils';
 import { useState, useEffect } from 'react';
+import { safeStringify } from '@/lib/utils';
+import ArticleCard from '@/app/components/ArticleCard';
 
 export default function Home({ params }: { params: Promise<{ author: string }> }) {
     const [userName, setUserName] = useState<string>('');
@@ -19,39 +19,31 @@ export default function Home({ params }: { params: Promise<{ author: string }> }
         if (userName) {
             getArticlesByUser(userName).then((articles) => {
                 setArticles(articles);
+                    if (!Array.isArray(articles)) {
+                        return <div>記事が見つかりませんでした。</div>;
+                    }
+                    if (articles.length === 0) {
+                        return <div>記事がありません。</div>;
+                    }
             });
         }
+        
     }, [userName]);
 
-    if (!userName) {
-        return <div>読み込み中...</div>;
-    }
-
-    if (!Array.isArray(articles)) {
-        return <div>記事が見つかりませんでした。</div>;
-    }
-
-    if (articles.length === 0) {
-        return <div></div>
-        // return <div>記事がありません。</div>;
-    }
+    // if (!userName) {
+    //     return <div></div>;
+    // }
 
     return (
         <>
-            {articles.map((article: any, index: number) => (
-                <div key={safeStringify(article._id) || `article-${index}`}
-                    className="border-b border-gray-200 p-10">
-                    <div className="text-sm font-bold text-gray-500">{safeStringify(article._id)}</div>
-                    <Link href={`/articles/${safeStringify(article._id)}`}>
-                        <div className="text-xl font-bold cursor-pointer hover:underline">{safeStringify(article.title)}</div>
-                    </Link>
-                    <div className="text-lg font-bold">{safeStringify(article.author)}</div>
-                    <div className="text-base font-bold">{safeStringify(article.created_at)}</div>
-                    <div className="border border-gray-200 p-5 m-2">
-                        <div className="text-sm">{safeStringify(article.content)}</div>
+            <div className="mx-8 mt-8">
+                {userName && <h1 className="text-2xl font-medium p-2 text-gray-600">{ safeStringify(userName) }の記事一覧</h1> }
+                {articles.map((article: any) => (
+                    <div key={safeStringify(article._id)} className="my-4">
+                        <ArticleCard article={article} showAuthor={false} />
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
         </>
     );
 }
