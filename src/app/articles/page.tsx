@@ -28,11 +28,11 @@ export default function Home() {
                 <div key={safeStringify(article._id) || `article-${index}`}
                     className="border-b border-gray-200 p-10">
                     <div className="text-sm font-bold text-gray-500">{safeStringify(article._id)}</div>
-                    <Link href={`/articles/${safeStringify(article.author.inner)}/${safeStringify(article._id)}`}>
+                    <Link href={`/articles/${safeStringify(article._id)}`}>
                         <div className="text-xl font-bold cursor-pointer hover:underline">{safeStringify(article.title)}</div>
                     </Link>
                     <div className="text-lg font-bold">
-                        <Link href={`/articles/${safeStringify(article.author.inner)}`} className="hover:underline">
+                        <Link href={`/author/${safeStringify(article.author.inner)}`} className="hover:underline">
                             {safeStringify(article.author)}
                         </Link>
                     </div>

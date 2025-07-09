@@ -1,7 +1,5 @@
 const API_BASE_URL = '/api';
 
-const REVALIDATE_TAGS = ['articles'];
-
 async function fetchAPI(path: string) {
     const url = `${API_BASE_URL}${path}`;
     const res = await fetch(url, {
