@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 interface HeaderProps {
     onMenuClick?: () => void;
@@ -12,17 +13,21 @@ export default function Header({ onMenuClick }: HeaderProps) {
                     <div className="flex items-center space-x-4">
                         
                         <Link href="/" className="flex items-center space-x-2">
-                            <span className="font-bold text-sm sm:text-base md:text-lg lg:text-xl text-gray-900 whitespace-nowrap">Blog Platform</span>
+                            <span className="font-bold text-sm sm:text-base md:text-lg lg:text-xl text-gray-800 whitespace-nowrap">Blog Platform</span>
                         </Link>
                     </div>
 
                     <div className="flex items-center space-x-4">
-                        <Link
-                            href="/login"
-                            className="text-sm sm:text-base text-gray-600 hover:text-gray-900 transition-colors duration-200 font-medium"
-                        >
-                            ログイン
+                        <Link href="/search">
+                            <Image src="/search.svg" alt="Search" width={24} height={24} className="cursor-pointer" />
                         </Link>
+                        <div className="flex items-center px-4 py-2 rounded-2xl border border-gray-300 hover:bg-gray-200 transition-colors duration-200">
+                            <Link
+                                href="/auth"
+                                className="text-s font-bold text-gray-500">
+                                ログイン
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>
