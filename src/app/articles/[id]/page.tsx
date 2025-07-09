@@ -19,12 +19,13 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
         if (id) {
             getArticle(id).then((article) => {
                 setArticle(article);
+
             });
         }
     }, [id]);
 
-    if (!article) {
-        return <div>記事が見つかりませんでした。</div>;
+    if (article == null) {
+        return <div></div>;
     }
 
     return (
