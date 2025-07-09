@@ -25,11 +25,13 @@ export default function Home() {
 
     return (
         <>
-            {articles.map((article: any) => (
-                <div key={safeStringify(article._id)} className="mx-8 my-4">
-                    <ArticleCard article={article} showAuthor={true} />
-                </div>
-            ))}
+            <div className="mx-8 mt-8">
+                {articles.map((article: any) => (
+                    <div key={safeStringify(article._id)} className="my-4">
+                        <ArticleCard article={article} showAuthor={true} />
+                    </div>
+                ))}
+            </div>
         </>
     );
 }

@@ -31,18 +31,19 @@ export default function Home({ params }: { params: Promise<{ author: string }> }
     }, [userName]);
 
     // if (!userName) {
-    //     return <div>読み込み中...</div>;
+    //     return <div></div>;
     // }
-
-
 
     return (
         <>
-            {articles.map((article: any) => (
-                <div key={safeStringify(article._id)} className="mx-8 my-4">
-                    <ArticleCard article={article} showAuthor={false} />
-                </div>
-            ))}
+            <div className="mx-8 mt-8">
+                {userName && <h1 className="text-2xl font-medium p-2 text-gray-600">{ safeStringify(userName) }の記事一覧</h1> }
+                {articles.map((article: any) => (
+                    <div key={safeStringify(article._id)} className="my-4">
+                        <ArticleCard article={article} showAuthor={false} />
+                    </div>
+                ))}
+            </div>
         </>
     );
 }
