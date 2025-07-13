@@ -9,16 +9,20 @@ export default function Home() {
     const [articles, setArticles] = useState<any[]>([]);
 
     useEffect(() => {
-        getArticles().then((articles) => {
-            setArticles(articles);
-            if (!Array.isArray(articles)) {
-                return <div>記事が見つかりませんでした。</div>;
-            }
+        try {
+            getArticles().then((articles) => {
+                setArticles(articles);
+                if (!Array.isArray(articles)) {
+                    return <div>記事が見つかりませんでした。</div>;
+                }
 
-            if (articles.length === 0) {
-                return <div>記事がありません。</div>;
-            }
-        });
+                if (articles.length === 0) {
+                    return <div>記事がありません。</div>;
+                }
+            });
+        } catch (err: any) {
+            return <div> {err.message} </div>;
+        }
     }, [])
 
 
