@@ -22,12 +22,11 @@ const SearchComponent: NextPage = () => {
   const queryParam = searchParams.get("q") || "";
 
   const [articles, setArticles] = useState<Article[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     if (queryParam) {
       const fetchArticles = async () => {
-        setLoading(true);
         try {
           const result = await searchArticles(queryParam);
           setArticles(result);
@@ -35,7 +34,7 @@ const SearchComponent: NextPage = () => {
           console.error("Failed to search articles:", error);
           setArticles([]);
         } finally {
-          setLoading(false);
+          setLoaded(true);
         }
       };
       fetchArticles();
@@ -74,11 +73,7 @@ const SearchComponent: NextPage = () => {
       </form>
       
 
-      {loading ? (
-        <div></div>
-        // <p className="text-center mt-8">Loading...</p>
-      ) : (
-        
+      {loaded ? (
         <div className="mt-8 mx-8">
           {queryParam && <h1 className="text-2xl font-medium p-2 text-gray-600">"{ safeStringify(queryParam) }"の検索結果</h1> }
           {articles.map((article) => (
@@ -87,6 +82,9 @@ const SearchComponent: NextPage = () => {
             </div>
           ))}
         </div>
+        // <p className="text-center mt-8">Loading...</p>
+      ) : (
+        <div></div>
       )}
     </div>
   );
@@ -95,7 +93,8 @@ const SearchComponent: NextPage = () => {
 const SearchPage = () => (
   <Suspense fallback={<div></div>}>
     <SearchComponent />
-  </Suspense>);
+  </Suspense>
+);
 
 
 export default SearchPage;
