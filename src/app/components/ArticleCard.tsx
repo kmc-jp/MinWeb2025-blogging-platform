@@ -17,7 +17,7 @@ type Props = {
 export default function ArticleCard({ article, showAuthor }: Props) {
     return (
         <Link href={`/articles/${safeStringify(article._id)}`} className="group bg-white shadow-md px-8 pt-6 pb-5 rounded-sm block">
-            <div className="flex text-sm text-gray-500 mb-2">{new Date(safeStringify(article.created_at)).toLocaleDateString()}</div>
+            <div className="flex text-sm text-gray-500 mb-2">{new Date(safeStringify(article.created_at)).toLocaleDateString('ja-JP')}</div>
             
             <h2 className="text-2xl font-medium mb-4 text-sky-600 group-hover:text-red-400">{safeStringify(article.title)}</h2>
 
