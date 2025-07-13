@@ -25,6 +25,11 @@ export async function getArticlesByUser(user: string): Promise<any> {
     return fetchAPI(url);
 }
 
+export async function searchArticles(query: string): Promise<any> {
+    const url = '/articles/search?' + new URLSearchParams({ title_q: query })
+    return fetchAPI(url);
+}
+
 export async function getArticle(id: string): Promise<any> {
     return fetchAPI(`/articles/${id}`);
 }
