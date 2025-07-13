@@ -93,8 +93,9 @@ const SearchComponent: NextPage = () => {
 };
 
 const SearchPage = () => (
-　　<SearchComponent />
-);
+  <Suspense fallback={<div></div>}>
+    <SearchComponent />
+  </Suspense>);
 
 
 export default SearchPage;
