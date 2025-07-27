@@ -1,12 +1,22 @@
-export const ApiError = {
-    INVALID_RESPONSE: "invalid response",
-    FAILED_REQUEST_404: "failed request (404)",
-    FAILED_REQUEST: "failed request (other)",
+export const ApiErrorType = {
+    FAILED_VALIDATION:  0,
+    NOT_FOUND:          1,
+    FAILED_REQUEST:     2,
 } as const;
 
-export type ApiErrorType = (typeof ApiError)[keyof typeof ApiError];
+export type ApiErrorType = (typeof ApiErrorType)[keyof typeof ApiErrorType];
 
-export type getArticleResponse = {
+export class ApiError {
+    public errorType: ApiErrorType;
+    public message: string;
+
+    constructor(errorType: ApiErrorType, message?: string) {
+        this.errorType = errorType;
+        this.message = message ?? "";
+    }
+}
+
+export type ArticleResponse = {
     id: string,
     author: string,
     title: string,
@@ -15,39 +25,82 @@ export type getArticleResponse = {
     updated_at: Date
 }
 
-export async function toGetArticleResponse(rawResponse: Response): Promise<getArticleResponse | ApiError> {
-    const rawResponseJson = await rawResponse.json();
+export async function toArticlesResponse(rawResponse: Response): Promise<ArticleResponse[] | ApiError> {
+    try {
+        const rawResponseJson = await rawResponse.json();
+        
+        if (!Array.isArray(rawResponseJson)) {
+            return new ApiError(ApiErrorType.FAILED_VALIDATION);
+        }
 
-    if (!rawResponseJson._id) {
-        return ApiError.INVALID_RESPONSE;
-	}
+        if (rawResponseJson.length === 0) {
+            return new ApiError(ApiErrorType.NOT_FOUND);
+        }
 
-    if (!rawResponseJson.author) {
-        return ApiError.INVALID_RESPONSE;
+        const articles: ArticleResponse[] = [];
+        
+        for (const rawArticle of rawResponseJson) {
+            const article = responseValidation(rawArticle);
+            if (article instanceof ApiError) {
+                return article;
+            }
+            articles.push(article);
+        }
+
+        return articles;
+    } catch (error) {
+        return new ApiError(ApiErrorType.FAILED_REQUEST);
+    }
+}
+
+export async function toArticleResponse(rawResponse: Response): Promise<ArticleResponse | ApiError> {
+    try {
+        const rawResponseJson = await rawResponse.json();
+        return responseValidation(rawResponseJson);
+    } catch (error) {
+        return new ApiError(ApiErrorType.FAILED_REQUEST);
+    }
+}
+
+// JSONデータからArticleResponseオブジェクトに変換する関数
+export function responseValidation(rawData: any): ArticleResponse | ApiError {
+    // 必須フィールドの検証
+    if (!rawData._id.$oid) {
+        return new ApiError(ApiErrorType.FAILED_VALIDATION);
     }
 
-    if (!rawResponseJson.title) {
-        return ApiError.INVALID_RESPONSE;
+    if (!rawData.author.inner) {
+        return new ApiError(ApiErrorType.FAILED_VALIDATION);
     }
 
-    if (!rawResponseJson.content) {
-        return ApiError.INVALID_RESPONSE;
+    if (!rawData.title) {
+        return new ApiError(ApiErrorType.FAILED_VALIDATION);
     }
 
-    if (!rawResponseJson.created_at) {
-        return ApiError.INVALID_RESPONSE;
+    if (!rawData.content) {
+        return new ApiError(ApiErrorType.FAILED_VALIDATION);
     }
 
-    if (!rawResponseJson.updated_at) {
-        return ApiError.INVALID_RESPONSE;
+    if (!rawData.created_at) {
+        return new ApiError(ApiErrorType.FAILED_VALIDATION);
     }
 
-    return {
-        id: rawResponseJson._id,
-        author: rawResponseJson.author,
-        title: rawResponseJson.title,
-        content: rawResponseJson.content,
-        created_at: new Date(rawResponseJson.created_at),
-        updated_at: new Date(rawResponseJson.updated_at),
+    if (!rawData.updated_at) {
+        return new ApiError(ApiErrorType.FAILED_VALIDATION);
     }
+
+    const createdAt: Date = new Date(rawData.created_at);
+    const updatedAt: Date = new Date(rawData.updated_at);
+
+    let res = {
+        id: rawData._id.$oid,
+        author: rawData.author.inner,
+        title: rawData.title,
+        content: rawData.content,
+        created_at: createdAt,
+        updated_at: updatedAt,
+    } as ArticleResponse
+    
+    console.log(res);
+    return res;
 }

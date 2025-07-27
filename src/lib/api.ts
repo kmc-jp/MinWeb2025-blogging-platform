@@ -1,9 +1,8 @@
-import { getArticleResponse, toGetArticleResponse } from "./types";
-import { ApiError, type ApiErrorType } from "./types";
+import { ApiError, ApiErrorType, ArticleResponse, toArticleResponse, toArticlesResponse } from "./types";
 
 const API_BASE_URL = '/api';
 
-async function fetchAPI(path: string): Promise<Response | ApiErrorType> {
+async function fetchAPI(path: string): Promise<any | ApiError> {
     const url = `${API_BASE_URL}${path}`;
     const res = await fetch(url, {
         method: 'GET',
@@ -14,33 +13,44 @@ async function fetchAPI(path: string): Promise<Response | ApiErrorType> {
 
     if (!res.ok) {
         if (res.status === 404) {
-            return ApiError.FAILED_REQUEST_404;
+            return new ApiError(ApiErrorType.NOT_FOUND);
         }
         
-        return ApiError.FAILED_REQUEST;
+        return new ApiError(ApiErrorType.FAILED_REQUEST);
     }
 
-    return res.json();
+    return res;
 }
 
 
-export async function getArticles(): Promise<getArticleResponse[] | ApiErrorType> {
+export async function getArticles(): Promise<ArticleResponse[] | ApiError> {
     const rawResponse = await fetchAPI('/articles');
 
-    if (Object.values(ApiError).includes(rawResponse as ApiErrorType)) {
-        return rawResponse as ApiErrorType;
+    if (rawResponse instanceof ApiError) {
+        return rawResponse as ApiError;
     }
 
-    const res = await toGetArticleResponse(rawResponse as Response); 
-
-    return res.json();
+    return await toArticlesResponse(rawResponse);
 }
 
-export async function getArticlesByUser(user: string): Promise<getArticlesResponse[]> {
+export async function getArticlesByUser(user: string): Promise<ArticleResponse[] | ApiError> {
     const url = '/articles/search?' + new URLSearchParams({ author: user })
-    return fetchAPI(url);
+    
+    const rawResponse = await fetchAPI(url);
+    
+    if (rawResponse instanceof ApiError) {
+        return rawResponse as ApiError;
+    }
+
+    return await toArticlesResponse(rawResponse);
 }
 
-export async function getArticle(id: string): Promise<getArticlesResponse> {
-    return fetchAPI(`/articles/${id}`);
+export async function getArticle(id: string): Promise<ArticleResponse | ApiError> {
+    const rawResponse = await fetchAPI(`/articles/${id}`);
+
+    if (rawResponse instanceof ApiError) {
+        return rawResponse as ApiError;
+    }
+
+    return await toArticleResponse(rawResponse);
 }
