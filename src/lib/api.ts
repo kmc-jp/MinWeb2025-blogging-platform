@@ -54,3 +54,15 @@ export async function getArticle(id: string): Promise<ArticleResponse | ApiError
 
     return await toArticleResponse(rawResponse);
 }
+
+export async function searchArticles(query: string): Promise<any> {
+    const url = '/articles/search?' + new URLSearchParams({ title_q: query })
+    
+    const rawResponse = await fetchAPI(url);
+
+    if (rawResponse instanceof ApiError) {
+        return rawResponse as ApiError;
+    }
+
+    return await toArticlesResponse(rawResponse);
+}
