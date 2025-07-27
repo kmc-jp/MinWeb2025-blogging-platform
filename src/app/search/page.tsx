@@ -5,42 +5,33 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 import { searchArticles } from "@/lib/api";
-import { safeStringify } from "@/lib/utils";
 import ArticleCard from "@/app/components/ArticleCard";
-
-type Article = {
-  _id: any;
-  title: string;
-  content: string;
-  author: string;
-  created_at: string;
-};
+import { ArticleResponse, ApiError, ApiErrorType } from "@/lib/types";
 
 const SearchComponent: NextPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const queryParam = searchParams.get("q") || "";
 
-  const [articles, setArticles] = useState<Article[]>([]);
+  const [articles, setArticles] = useState<ArticleResponse[]>([]);
   const [loading, setLoading] = useState(false);
-
+  
   useEffect(() => {
     if (queryParam) {
-      const fetchArticles = async () => {
-        setLoading(true);
-        try {
-          const result = await searchArticles(queryParam);
-          setArticles(result);
-        } catch (error) {
-          console.error("Failed to search articles:", error);
-          setArticles([]);
-        } finally {
-          setLoading(false);
+      searchArticles(queryParam).then((articles) => {
+        if (articles instanceof ApiError) {
+          switch (articles.errorType) {
+            case ApiErrorType.FAILED_VALIDATION:
+                return <div>failed response validation</div>;
+            case ApiErrorType.NOT_FOUND:
+                return <div>記事がありません</div>;
+            default:
+                setArticles([]);
+          }
+        } else {
+          setArticles(articles as ArticleResponse[]);
         }
-      };
-      fetchArticles();
-    } else {
-      setArticles([]);
+      });
     }
   }, [queryParam]);
 
@@ -80,12 +71,16 @@ const SearchComponent: NextPage = () => {
       ) : (
         
         <div className="mt-8 mx-8">
-          {queryParam && <h1 className="text-2xl font-medium p-2 text-gray-600">"{ safeStringify(queryParam) }"の検索結果</h1> }
-          {articles.map((article) => (
-            <div key={safeStringify(article._id)} className="my-4">
-                <ArticleCard article={article} showAuthor={true} />
-            </div>
-          ))}
+          {queryParam && <h1 className="text-2xl font-medium p-2 text-gray-600">"{ queryParam }"の検索結果</h1> }
+          {articles.length > 0 ? (
+            articles.map((article: ArticleResponse) => (
+              <div key={article.id} className="my-4">
+                  <ArticleCard article={article} showAuthor={true} />
+              </div>
+            ))
+          ) : (
+            <p className="text-center mt-8">No articles found</p>
+          )}
         </div>
       )}
     </div>

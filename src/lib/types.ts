@@ -101,6 +101,5 @@ export function responseValidation(rawData: any): ArticleResponse | ApiError {
         updated_at: updatedAt,
     } as ArticleResponse
     
-    console.log(res);
     return res;
 }

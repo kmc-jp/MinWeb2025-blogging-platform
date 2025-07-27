@@ -20,7 +20,6 @@ export default function Home() {
                         return <div>API error</div>;
                 }
             }
-            console.log(articles);
             setArticles(articles as ArticleResponse[]);
         });
     }, [])
