@@ -2,12 +2,12 @@
 
 import { getArticlesByUser } from '@/lib/api';
 import { useState, useEffect } from 'react';
-import { safeStringify } from '@/lib/utils';
 import ArticleCard from '@/app/components/ArticleCard';
+import { ArticleResponse, ApiError, ApiErrorType } from "@/lib/types";
 
 export default function Home({ params }: { params: Promise<{ author: string }> }) {
     const [userName, setUserName] = useState<string>('');
-    const [articles, setArticles] = useState<any[]>([]);
+    const [articles, setArticles] = useState<ArticleResponse[]>([]);
 
     useEffect(() => {
         params.then(({ author }) => {
@@ -18,13 +18,17 @@ export default function Home({ params }: { params: Promise<{ author: string }> }
     useEffect(() => {
         if (userName) {
             getArticlesByUser(userName).then((articles) => {
-                setArticles(articles);
-                    if (!Array.isArray(articles)) {
-                        return <div>記事が見つかりませんでした。</div>;
+                if (articles instanceof ApiError) {
+                    switch (articles.errorType) {
+                        case ApiErrorType.FAILED_VALIDATION:
+                            return <div>failed response validation</div>;
+                        case ApiErrorType.NOT_FOUND:
+                            return <div>記事がありません</div>;
+                        default:
+                            return <div>API error</div>;
                     }
-                    if (articles.length === 0) {
-                        return <div>記事がありません。</div>;
-                    }
+                }
+                setArticles(articles as ArticleResponse[]);
             });
         }
         
@@ -37,9 +41,9 @@ export default function Home({ params }: { params: Promise<{ author: string }> }
     return (
         <>
             <div className="mx-8 mt-8">
-                {userName && <h1 className="text-2xl font-medium p-2 text-gray-600">{ safeStringify(userName) }の記事一覧</h1> }
-                {articles.map((article: any) => (
-                    <div key={safeStringify(article._id)} className="my-4">
+                {userName && <h1 className="text-2xl font-medium p-2 text-gray-600">{ userName }の記事一覧</h1> }
+                {articles.map((article: any, index: number) => (
+                    <div key={index.toString()} className="my-4">
                         <ArticleCard article={article} showAuthor={false} />
                     </div>
                 ))}
