@@ -2,6 +2,7 @@ export const ApiErrorType = {
     FAILED_VALIDATION:  0,
     NOT_FOUND:          1,
     FAILED_REQUEST:     2,
+    BAD_REQUEST:        3,
 } as const;
 
 export type ApiErrorType = (typeof ApiErrorType)[keyof typeof ApiErrorType];
