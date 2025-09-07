@@ -8,7 +8,7 @@ interface HeaderProps {
 export default function Header({ onMenuClick }: HeaderProps) {
     return (
         <header className="bg-white shadow-sm border-b border-gray-200 top-0 z-50">
-            <div className="mx-7">
+            <div className="mx-3 sm:mx-7">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex items-center space-x-4">
                         
@@ -17,19 +17,19 @@ export default function Header({ onMenuClick }: HeaderProps) {
                         </Link>
                     </div>
 
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-2 sm:space-x-4">
                         <Link href="/search">
                             <Image src="/search.svg" alt="Search" width={24} height={24} className="cursor-pointer" />
                         </Link>
                         <Link
                             href="/post"
-                            className="flex items-center px-4 py-2 rounded-2xl bg-sky-600 hover:bg-sky-700 transition-colors duration-200">
-                            <span className="text-s font-bold text-white">記事を書く</span>
+                            className="flex items-center px-2 py-2 sm:px-4 rounded-2xl bg-sky-600 hover:bg-sky-700 transition-colors duration-200">
+                            <span className="text-xs sm:text-sm font-bold text-white whitespace-nowrap">記事を書く</span>
                         </Link>
                         <Link
                             href="/auth"
-                            className="flex items-center px-4 py-2 rounded-2xl border border-gray-300 hover:bg-gray-200 transition-colors duration-200">
-                            <span className="text-s font-bold text-gray-500">ユーザー登録</span>
+                            className="flex items-center px-2 py-2 sm:px-4 rounded-2xl border border-gray-300 hover:bg-gray-200 transition-colors duration-200">
+                            <span className="text-xs sm:text-sm font-bold text-gray-500 whitespace-nowrap">ユーザー登録</span>
                         </Link>
                     </div>
                 </div>
