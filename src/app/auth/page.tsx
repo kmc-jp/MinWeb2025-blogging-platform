@@ -120,7 +120,7 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+    <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg">
       <h1 className="text-2xl font-bold mb-6 text-center">ユーザー登録</h1>
 
       <div className="mb-6 p-4 bg-red-50 border-2 border-red-400 rounded-lg">
