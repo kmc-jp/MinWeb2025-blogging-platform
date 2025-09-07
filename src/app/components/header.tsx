@@ -21,6 +21,11 @@ export default function Header({ onMenuClick }: HeaderProps) {
                         <Link href="/search">
                             <Image src="/search.svg" alt="Search" width={24} height={24} className="cursor-pointer" />
                         </Link>
+                        <Link
+                            href="/post"
+                            className="flex items-center px-4 py-2 rounded-2xl bg-sky-600 hover:bg-sky-700 transition-colors duration-200">
+                            <span className="text-s font-bold text-white">記事を書く</span>
+                        </Link>
                         <div className="flex items-center px-4 py-2 rounded-2xl border border-gray-300 hover:bg-gray-200 transition-colors duration-200">
                             <Link
                                 href="/auth"
