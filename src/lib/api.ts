@@ -98,3 +98,37 @@ export async function postArticle(author: string, title: string, content: string
         return new ApiError(ApiErrorType.FAILED_REQUEST);
     }
 }
+
+export async function registerUser(userData: {
+    name: string;
+    display_name: string;
+    intro: string;
+    email: string;
+    show_email: boolean;
+    password: string;
+    created_at: string;
+}): Promise<{ success: boolean; message?: string } | ApiError> {
+    const url = `${API_BASE_URL}/users`;
+    
+    try {
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        });
+
+        if (!res.ok) {
+            if (res.status === 500) {
+                return new ApiError(ApiErrorType.FAILED_REQUEST, "既に登録されているユーザー名です");
+            }
+            return new ApiError(ApiErrorType.FAILED_REQUEST, "登録に失敗しました");
+        }
+
+        const data = await res.json();
+        return { success: true, message: data.message };
+    } catch {
+        return new ApiError(ApiErrorType.FAILED_REQUEST);
+    }
+}
